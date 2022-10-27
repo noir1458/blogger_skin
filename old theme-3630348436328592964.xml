@@ -1,0 +1,3118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' ng-app='app' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+
+<script src='http://code.jquery.com/jquery-latest.min.js'/>
+
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js'/>
+
+<meta content='width=device-width, initial-scale=1, user-scalable=no' name='viewport'/>
+  
+<script src='http://cdn.mathjax.org/mathjax/latest/MathJax.js' type='text/javascript'>
+MathJax.Hub.Config({
+ extensions: [&quot;tex2jax.js&quot;,&quot;TeX/AMSmath.js&quot;,&quot;TeX/AMSsymbols.js&quot;],
+ jax: [&quot;input/TeX&quot;, &quot;output/HTML-CSS&quot;],
+ tex2jax: {
+     inlineMath: [ [&#39;$&#39;,&#39;$&#39;], [&quot;\\(&quot;,&quot;\\)&quot;] ],
+     displayMath: [ [&#39;$$&#39;,&#39;$$&#39;], [&quot;\\[&quot;,&quot;\\]&quot;] ],
+ },
+ &quot;HTML-CSS&quot;: { availableFonts: [&quot;TeX&quot;] }
+});
+</script>
+
+<b:include data='blog' name='all-head-content'/>
+
+
+
+<b:if cond='data:blog.pageType != &quot;item&quot; and data:blog.pageType != &quot;static_page&quot;'> 
+
+<!-- 일반 상태에서는 블로그 제목만 표시 -->
+
+<title><data:blog.title/></title>
+
+<b:else/>
+
+<!-- 게시물 또는 페이지 조회시 [ 게시물(페이지) 제목 : 블로그 제목 ]으로 표시-->
+
+<title><data:blog.pageName/> : <data:blog.title/></title>
+
+</b:if>
+
+
+
+<b:skin><![CDATA[
+
+/* 기본 설정 */
+
+body { margin:0; padding:0; font-family:'맑은 고딕', verdana;
+
+background-color:#e6e6e6;
+
+}
+
+ul, ol, li { margin:0; padding:0; list-style:none; }
+
+h1, h2, h3, h4, h5, h6 { margin:0; padding:0; }
+
+a { color:#05f; text-decoration:none; }
+
+a:hover { text-decoration:underline; }
+
+#navbar { display:none; }
+
+h1 { font-size:40px; font-weight:bold; } /* 블로그 제목 */
+
+h2 { font-size:24px; font-weight:bold; } /* 사이드바 제목 */
+
+h3 { font-size:18px; font-weight:bold; } /* 게시물 제목 */
+
+h4 { font-size:16px; font-weight:bold; }
+
+h5 { font-size:14px; font-weight:bold; }
+
+h6 { font-size:12px; font-weight:bold; } /*원래 크기 h1~h6 : 60 24 32 22 20 18*/
+
+.section { margin:0; padding:0; }
+
+.date { color:darkgreen; font-size: 12px; }
+
+.claer { clear:both; }
+
+.quickedit { display:none; }
+
+
+
+
+
+
+
+::selection { background:#D8D8D8; } /*텍스트 드래그 색상, 추가함*/
+
+::-moz-selection { background:#D8D8D8; } /* firefox */
+
+.front-date { display:inline; font-size:0.8em; color:darkgreen; }
+
+.post-labels { display:inline; font-size:0.8em; }
+
+.post-labels a { color:darkgreen; }
+
+
+
+
+
+
+
+/*스킨원본 출처 https://kuzuro.blogspot.com/2019/06/blog-post.html*/
+
+
+
+
+
+
+
+/* 블로그 레이아웃 */
+
+#root { }
+
+header { }
+
+#container { width:calc(1200px - 40px); margin:0 auto; padding:10px; } /* 블로그 가로 크기 */
+
+#main { width:860px; float:left; } /* 컨텐츠 가로 크기 */
+
+aside { width:260px; float:right; } /* 사이드바 가로 크기 */
+
+#container::after { content:""; display:block; clear:both; }
+
+footer{ margin-top:20px; }
+
+
+
+
+/* 관리자 모드 레이아웃 설정 */
+
+body#layout div.section#main { width:400px; }
+
+body#layout aside .widget .widget-content { margin:0; }
+
+
+
+
+
+
+
+/* 헤더 상세 설정 */
+
+header #header { text-align:center; padding:0px; width:calc(1200px - 40px); margin:0 auto; }
+
+header #header h1 a { color:#000000; text-decoration:none; } 
+
+header #header .description { display:none; }
+
+
+
+
+/* 메인 설정 */
+
+.blog-posts {}
+
+.blog-posts .post { margin-bottom:10px; padding:20px 10px; border:1px solid #808080; }
+
+#Blog1 { background-color:rgba(255, 255, 255); }
+
+.post h3 a { color:#000000; text-decoration:none; } /* 게시물 제목 색, 일정 줄 넘어갈시 생략기능은 아래 추가함 */
+
+.post .post-body { margin:15px 0; padding:10px 0; font-size:14px; line-height:1.6; } /* 게시물 내용 글씨 크기 */
+
+.post .post-body a { color:#2980B9; } /*게시물 내용중 링크색상, 추가함*/
+
+.post-body p { margin:20px 0; }
+
+.post-body img { max-width:calc(100% - 20px); border: 1px solid #eee; margin:0 auto; } /*이미지 옆 빈공간 클릭시 이미지로 넘어가는 문제 발생 display:block; 없앰*/
+
+.post-body .separator { }
+
+.post-body .separator a { margin:0; }
+
+.post-body iframe { max-width:100%; width:860px; height:550px; }
+
+.post-footer { padding:10px 0; }
+
+.post-footer .post-edit { text-align:right; }
+
+.post-footer a { color:darkgray; } /*추가함*/
+
+
+
+
+.comments { margin:10px 0 60px 0; }
+
+.comment-header .user { font-size:14px; } /* 댓글 작성자 이름 */
+
+.comment-header .user a { color:#000; }
+
+.comment-header .datetime a { color:#999; }
+
+.comments .comments-content .datetime { margin-left:10px; }
+
+.comments .comments-content { margin-bottom:30px; font-size:12px; } /*댓글 내용 글자크기*/
+
+.comments .comments-content .comment-content { line-height:2; text-align:left; margin:20px 0; }
+
+.comments span.comment-actions.secondary-text { display:block; text-align:right; }
+
+.comment-actions a { margin-left:20px; color:darkgray; } /*추가함*/
+
+.item-control a:hover, .item-action a:hover { text-decoration:underline !important }
+
+.comments .comments-content .comment-replies { margin-left: 60px; margin-top: 10px; background: #f9f9f9; }
+
+.comments .thread-expanded .thread-arrow, .comments .thread-collapsed .thread-arrow { display:none; }
+
+.comments .thread-count { font-size:20px; font-weight:bold; }
+
+.comments .thread-count a::after { content: " 접기/펴기"; }
+
+.comments .continue a::before { content:"이 댓글에 "; }
+
+.comments .comment-replies .continue a::after { content:" 작성"; }
+
+.comments #top-continue a::before { content:"이 게시물에 "; }
+
+.comments .comments-content .comment-thread ol { margin:30px 0 0 0; }
+
+.comments .continue { font-size: 20px; cursor: default; }
+
+.comments .continue a { display: inline-block; padding: 10px 0; }
+
+.comments .comments-content .comment-thread { margin:10px 0; }
+
+.comments .comment-replybox-thread { margin-top:20px; }
+
+
+
+
+/* 페이징(이전/다음페이지) */
+
+#blog-pager { margin:20px 0; }
+
+#blog-pager-newer-link .blog-pager-newer-link { font-size:16px; color:#5d5d5d; }
+
+#blog-pager-older-link .blog-pager-older-link { font-size:16px; color:#5d5d5d; }
+
+
+
+
+.blog-feeds { color:#5d5d5d; } /*추가함*/
+
+.post-feeds { color:#5d5d5d; } /*추가함*/
+
+.feed-links { display:none; }
+
+
+
+
+
+
+
+/* 사이드바 */
+
+aside .widget { margin:0 0 10px 0; padding:5px; background-color:rgba(255, 255, 255); border:1px solid #808080; }
+
+.widget ul { margin:0; padding:0; }
+
+.widget ul li { margin:10px 0; padding:0; }
+
+aside .widget .widget-content input.gsc-input { font-size:16px; font-family:'맑은 고딕', verdana; }
+
+aside .widget .widget-content.list-label-widget-content { margin : 0; }
+
+aside .widget .widget-content.list-label-widget-content li { margin:5px; display:block; color:#404040; font-size:12px; }
+
+aside .widget .widget-content.list-label-widget-content a { color:#404040; }
+
+
+
+aside .widget h2 { font-size:14px; background-color:white; padding:2px; color:black; border-bottom:1px solid #808080; }
+
+aside .widget .widget-content { padding:5px 5px 3px 5px; }
+
+
+
+
+#Feed1 .widget-content .item-title a { color:black; } 
+
+#Feed1 .widget-content { font-size:10px; color:black; }
+
+
+
+
+/* 푸터 */
+
+footer { color:#5d5d5d; padding:30px 0; }
+
+footer .foot .widget .widget-content a { color:#5d5d5d; } /*추가함*/
+
+#Attribution1 { display:none; }
+
+
+
+
+
+
+
+/* 미디어쿼리 : 화면의 크기가 특정 크기 이하가 될 경우 작동 */
+
+@media screen and (max-width: 1240px) {
+
+#container { width:calc(100% - 40px); } 
+
+header #header { width:calc(100% - 40px); } /*추가함*/
+
+#main { width:calc(100% - 260px - 40px); }
+
+}
+
+
+
+
+@media screen and (max-width: 800px)
+
+{
+
+h1 { font-size:18px; }
+
+h2 { font-size:20px; }
+
+h3 { font-size:18px; }
+
+h4 { font-size:16px; }
+
+#main { float:none; width:100%; }
+
+.post-body iframe { height:450px; }
+
+aside { float:none; width:100%; margin-top:60px;}
+
+.comments .comments-content .datetime { display:block; }
+
+.blog-posts .post { padding:10px; }/*추가함, 모바일 경우 글 위아래 크기 조금 줄어들도록*/
+
+/*글 썸네일 추가함*/
+
+
+
+
+}
+
+
+
+
+@media screen and (max-width: 600px)
+
+{
+
+.post-body iframe { height:350px; }
+
+.post-footer,
+
+.comment-content { font-size:14px; }
+
+}
+
+
+
+
+]]></b:skin>
+
+
+
+
+<!-- 게시물 목록 -->
+
+<b:if cond='data:blog.pageType != &quot;item&quot;'>
+
+<style type='text/css'>
+
+.post-body { display: none; }
+
+.post-edit { display: none; }
+
+.jump-link { display: none; }
+
+#Blog1 { display: none; }
+
+.widget { margin-top: 0; }
+
+</style>
+
+</b:if>
+
+
+
+
+<!-- 게시물 조회 -->
+
+<b:if cond='data:blog.pageType == &quot;item&quot;'>
+
+<style type='text/css'>
+
+.post-body { border-top: 1px solid #ccc; } /*게시물 조회시 제목날짜 아래에 선*/
+
+#blog-pager { display: none; }
+
+</style>
+
+</b:if>
+
+
+
+<!-- 페이지 조회 -->
+
+<b:if cond='data:blog.pageType == &quot;static_page&quot;'>
+
+<style type='text/css'>
+
+.post-body { display: block; border-top: 1px solid #ccc; } /*페이지 조회시 제목날짜 아래에 선*/
+
+.post-edit { display: block; }
+
+.date { display:none; }
+
+.front-date { display:none; } /*날짜앞 구분선 - 페이지에서는 안보이도록*/
+
+#Blog1 { display: block; }
+
+</style>
+
+</b:if>
+
+
+
+
+<b:if cond='data:skin.vars.body_background.image.isResizable'>
+
+<b:include cond='not data:view.isPreview' data='{ image: data:skin.vars.body_background.image, selector: &quot;body&quot; }' name='responsiveImageStyle'/>
+
+</b:if>
+
+
+
+
+<b:include data='blog' name='google-analytics'/>
+
+
+
+
+</head>
+
+
+
+
+<body expr:class='&quot;loading&quot; + data:blog.mobileClass'>
+
+
+
+
+<div id='root'>
+
+
+
+
+
+
+<b:section class='navbar' id='navbar' maxwidgets='1' name='Navbar' showaddelement='no'>
+  <b:widget id='Navbar1' locked='true' title='Navbar' type='Navbar' version='1'>
+    <b:includable id='main'>&lt;script type=&quot;text/javascript&quot;&gt;
+    function setAttributeOnload(object, attribute, val) {
+      if(window.addEventListener) {
+        window.addEventListener(&#39;load&#39;,
+          function(){ object[attribute] = val; }, false);
+      } else {
+        window.attachEvent(&#39;onload&#39;, function(){ object[attribute] = val; });
+      }
+    }
+  &lt;/script&gt;
+&lt;div id=&quot;navbar-iframe-container&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://apis.google.com/js/plusone.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+      gapi.load(&quot;gapi.iframes:gapi.iframes.style.bubble&quot;, function() {
+        if (gapi.iframes &amp;&amp; gapi.iframes.getContext) {
+          gapi.iframes.getContext().openChild({
+              url: &#39;https://www.blogger.com/navbar.g?targetBlogID\x3d3630348436328592964\x26blogName\x3dnoir1458\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dLIGHT\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttps://noir1458.blogspot.com/search\x26blogLocale\x3dko\x26v\x3d2\x26homepageUrl\x3dhttps://noir1458.blogspot.com/\x26vt\x3d-644984556795644690&#39;,
+              where: document.getElementById(&quot;navbar-iframe-container&quot;),
+              id: &quot;navbar-iframe&quot;
+          });
+        }
+      });
+    &lt;/script&gt;&lt;script type=&quot;text/javascript&quot;&gt;
+(function() {
+var script = document.createElement(&#39;script&#39;);
+script.type = &#39;text/javascript&#39;;
+script.src = &#39;//pagead2.googlesyndication.com/pagead/js/google_top_exp.js&#39;;
+var head = document.getElementsByTagName(&#39;head&#39;)[0];
+if (head) {
+head.appendChild(script);
+}})();
+&lt;/script&gt;
+</b:includable>
+  </b:widget>
+</b:section>
+
+
+
+
+
+
+<header>
+
+<b:section class='header' id='header' maxwidgets='2' name='Header' showaddelement='no'>
+  <b:widget id='HTML1' locked='false' title='' type='HTML' version='1'>
+    <b:widget-settings>
+      <b:widget-setting name='content'>&lt;div class=&quot;topnav&quot; id=&quot;myTopnav&quot;&gt;
+
+&lt;a href=&quot;/&quot; class=&quot;active&quot;&gt;Home&lt;/a&gt;
+
+&lt;a href=&quot;/p/main-page.html&quot;&gt;main&lt;/a&gt;
+
+&lt;div class=&quot;dropdown&quot;&gt;
+
+&lt;button class=&quot;dropbtn&quot;&gt;link&#8595;
+
+&lt;i class=&quot;fa fa-caret-down&quot;&gt;&lt;/i&gt;
+
+&lt;/button&gt;
+
+&lt;div class=&quot;dropdown-content&quot;&gt;
+
+&lt;a href=&quot;https://www.blogger.com/&quot;&gt;blogger&lt;/a&gt;
+
+&lt;a href=&quot;https://www.youtube.com/channel/UCNYodZV1UtRBhtMx3lqV5TA&quot;&gt;youtube&lt;/a&gt;
+
+&lt;a href=&quot;https://github.com/noir1458&quot;&gt;github&lt;/a&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt; 
+
+&lt;a href=&quot;javascript:void(0);&quot; style=&quot;font-size:15px;&quot; class=&quot;icon&quot; onclick=&quot;dropdownFunction()&quot;&gt;&amp;#9776;&lt;/a&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;style&gt;
+
+
+
+.topnav {
+
+overflow: hidden;
+
+background-color: white;
+
+border : 1px solid #808080;
+
+margin-top: 50px;
+
+}
+
+
+
+.topnav a {
+
+float: left;
+
+display: block;
+
+color: black;
+
+text-align: center;
+
+padding: 14px 16px;
+
+text-decoration: none;
+
+font-size: 17px;
+
+}
+
+
+
+.active {
+
+background-color: white;
+
+color: black;
+
+}
+
+
+
+.topnav .icon {
+
+display: none;
+
+}
+
+
+
+.dropdown {
+
+float: left;
+
+overflow: hidden;
+
+}
+
+
+
+.dropdown .dropbtn {
+
+font-size: 17px; 
+
+border: none;
+
+outline: none;
+
+color: black;
+
+padding: 14px 16px;
+
+background-color: inherit;
+
+font-family: inherit;
+
+margin: 0;
+
+}
+
+
+
+.dropdown-content {
+
+display: none;
+
+position: absolute;
+
+background-color: #f9f9f9;
+
+min-width: 160px;
+
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+z-index: 1;
+
+}
+
+
+
+.dropdown-content a {
+
+float: none;
+
+color: black;
+
+padding: 12px 16px;
+
+text-decoration: none;
+
+display: block;
+
+text-align: left;
+
+}
+
+
+
+.topnav a:hover, .dropdown:hover .dropbtn {
+
+background-color: #ccc;
+
+}
+
+
+
+.dropdown-content a:hover {
+
+background-color: #ccc;
+
+color: black;
+
+}
+
+
+
+.dropdown:hover .dropdown-content {
+
+display: block;
+
+}
+
+
+
+@media screen and (max-width: 600px) {
+
+}
+
+
+
+@media screen and (max-width: 600px) {
+
+.topnav a:not(:first-child), .dropdown .dropbtn {
+
+display: none;
+
+}
+
+.topnav a.icon {
+
+float: right;
+
+display: block;
+
+}
+
+}
+
+
+
+@media screen and (max-width: 600px) {
+
+.topnav.responsive {position: relative;}
+
+.topnav.responsive .icon {
+
+position: absolute;
+
+right: 0;
+
+top: 0;
+
+}
+
+.topnav.responsive a {
+
+float: none;
+
+display: block;
+
+text-align: left;
+
+}
+
+.topnav.responsive .dropdown {float: none;}
+
+.topnav.responsive .dropdown-content {position: relative;}
+
+.topnav.responsive .dropdown .dropbtn {
+
+display: block;
+
+width: 100%;
+
+text-align: left;
+
+}
+
+}
+
+&lt;/style&gt;</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main'>
+
+<!-- only display title if it's non-empty -->
+
+<b:if cond='data:title != &quot;&quot;'>
+
+<h2 class='title'><data:title/></h2>
+
+</b:if>
+
+<div class='widget-content'>
+
+<data:content/>
+
+</div>
+
+
+
+
+<b:include name='quickedit'/>
+
+</b:includable>
+  </b:widget>
+</b:section>
+
+</header>
+
+
+
+
+
+
+
+<section id='container'>
+
+
+
+
+<b:section class='main' id='main' name='Main' showaddelement='no'>
+  <b:widget id='Blog1' locked='true' title='블로그 게시물' type='Blog' version='1'>
+    <b:widget-settings>
+      <b:widget-setting name='commentLabel'>Comments</b:widget-setting>
+      <b:widget-setting name='showShareButtons'>false</b:widget-setting>
+      <b:widget-setting name='authorLabel'>By</b:widget-setting>
+      <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
+      <b:widget-setting name='timestampLabel'>-</b:widget-setting>
+      <b:widget-setting name='reactionsLabel'/>
+      <b:widget-setting name='showAuthorProfile'>false</b:widget-setting>
+      <b:widget-setting name='style.layout'>1x1</b:widget-setting>
+      <b:widget-setting name='showLocation'>false</b:widget-setting>
+      <b:widget-setting name='showTimestamp'>false</b:widget-setting>
+      <b:widget-setting name='postsPerAd'>1</b:widget-setting>
+      <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
+      <b:widget-setting name='backlinksLabel'/>
+      <b:widget-setting name='showDateHeader'>false</b:widget-setting>
+      <b:widget-setting name='style.textcolor'>#000000</b:widget-setting>
+      <b:widget-setting name='showCommentLink'>true</b:widget-setting>
+      <b:widget-setting name='style.urlcolor'>#008000</b:widget-setting>
+      <b:widget-setting name='showAuthor'>false</b:widget-setting>
+      <b:widget-setting name='style.linkcolor'>#0000ff</b:widget-setting>
+      <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
+      <b:widget-setting name='showLabels'>true</b:widget-setting>
+      <b:widget-setting name='postLabelsLabel'>태그 :</b:widget-setting>
+      <b:widget-setting name='showBacklinks'>false</b:widget-setting>
+      <b:widget-setting name='showInlineAds'>false</b:widget-setting>
+      <b:widget-setting name='showReactions'>false</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main' var='top'>
+
+
+
+
+
+
+
+<div class='blog-posts hfeed'>
+
+<b:loop values='data:posts' var='post'>
+
+<div class='post'>
+
+<b:include data='post' name='post'/>
+
+<b:include cond='data:blog.pageType in {&quot;static_page&quot;,&quot;item&quot;}' data='post' name='comment_picker'/>
+
+</div>
+
+</b:loop>
+
+</div>
+
+
+
+
+<!-- navigation -->
+
+<b:include name='nextprev'/>
+
+
+
+
+<!-- feed links -->
+
+<b:include name='feedLinks'/>
+
+
+
+
+<b:include cond='data:top.showPlusOne' name='googlePlusBootstrap'/>
+
+</b:includable>
+    <b:includable id='backlinkDeleteIcon' var='backlink'>
+
+<span expr:class='&quot;item-control &quot; + data:backlink.adminClass'>
+
+<a expr:href='data:backlink.deleteUrl' expr:title='data:top.deleteBacklinkMsg'>
+
+<img src='https://resources.blogblog.com/img/icon_delete13.gif'/>
+
+</a>
+
+</span>
+
+</b:includable>
+    <b:includable id='backlinks' var='post'>
+
+<a name='links'/><h4><data:post.backlinksLabel/></h4>
+
+<b:if cond='data:post.numBacklinks != 0'>
+
+<dl class='comments-block' id='comments-block'>
+
+<b:loop values='data:post.backlinks' var='backlink'>
+
+<div class='collapsed-backlink backlink-control'>
+
+<dt class='comment-title'>
+
+<span class='backlink-toggle-zippy'>&#160;</span>
+
+<a expr:href='data:backlink.url' rel='nofollow'><data:backlink.title/></a>
+
+<b:include data='backlink' name='backlinkDeleteIcon'/>
+
+</dt>
+
+<dd class='comment-body collapseable'>
+
+<data:backlink.snippet/>
+
+</dd>
+
+<dd class='comment-footer collapseable'>
+
+<span class='comment-author'><data:post.authorLabel/> <data:backlink.author/></span>
+
+<span class='comment-timestamp'><data:post.timestampLabel/> <data:backlink.timestamp/></span>
+
+</dd>
+
+</div>
+
+</b:loop>
+
+</dl>
+
+</b:if>
+
+<p class='comment-footer'>
+
+<a class='comment-link' expr:href='data:post.createLinkUrl' expr:id='data:widget.instanceId + &quot;_backlinks-create-link&quot;' target='_blank'><data:post.createLinkLabel/></a>
+
+</p>
+
+</b:includable>
+    <b:includable id='comment-form' var='post'>
+
+<div class='comment-form'>
+
+<a name='comment-form'/>
+
+
+
+
+<a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+
+<iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+
+<data:post.cmtfpIframe/>
+
+<script type='text/javascript'>
+
+BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+
+</script>
+
+</div>
+
+</b:includable>
+    <b:includable id='commentDeleteIcon' var='comment'>
+
+<span expr:class='&quot;item-control &quot; + data:comment.adminClass'>
+
+<b:if cond='data:showCmtPopup'>
+
+<div class='goog-toggle-button'>
+
+<div class='goog-inline-block comment-action-icon'/>
+
+</div>
+
+<b:else/>
+
+<a class='comment-delete' expr:href='data:comment.deleteUrl' expr:title='data:top.deleteCommentMsg'>
+
+<img src='https://resources.blogblog.com/img/icon_delete13.gif'/>
+
+</a>
+
+</b:if>
+
+</span>
+
+</b:includable>
+    <b:includable id='comment_count_picker' var='post'>
+
+<b:if cond='data:post.commentSource == 1'>
+
+<span class='cmt_count_iframe_holder' expr:data-count='data:post.numComments' expr:data-onclick='data:post.addCommentOnclick' expr:data-post-url='data:post.url' expr:data-url='data:post.url.canonical.http'>
+
+</span>
+
+<b:else/>
+
+<a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
+
+<data:post.commentLabelFull/>:
+
+</a>
+
+</b:if>
+
+</b:includable>
+    <b:includable id='comment_picker' var='post'>
+
+<b:if cond='data:post.commentSource == 1'>
+
+<b:include data='post' name='iframe_comments'/>
+
+<b:elseif cond='data:post.showThreadedComments'/>
+
+<b:include data='post' name='threaded_comments'/>
+
+<b:else/>
+
+<b:include data='post' name='comments'/>
+
+</b:if>
+
+</b:includable>
+    <b:includable id='comments' var='post'>
+
+<div class='comments' id='comments'>
+
+<a name='comments'/>
+
+<b:if cond='data:post.allowComments'>
+
+<b:if cond='data:post.commentPagingRequired'>
+
+<span class='paging-control-container'>
+
+<b:if cond='data:post.hasOlderLinks'>
+
+<a expr:class='data:post.oldLinkClass' expr:href='data:post.oldestLinkUrl'><data:post.oldestLinkText/></a>
+
+&#160;
+
+<a expr:class='data:post.oldLinkClass' expr:href='data:post.olderLinkUrl'><data:post.olderLinkText/></a>
+
+&#160;
+
+</b:if>
+
+
+
+
+<data:post.commentRangeText/>
+
+
+
+
+<b:if cond='data:post.hasNewerLinks'>
+
+&#160;
+
+<a expr:class='data:post.newLinkClass' expr:href='data:post.newerLinkUrl'><data:post.newerLinkText/></a>
+
+&#160;
+
+<a expr:class='data:post.newLinkClass' expr:href='data:post.newestLinkUrl'><data:post.newestLinkText/></a>
+
+</b:if>
+
+</span>
+
+</b:if>
+
+
+
+
+<div expr:id='data:widget.instanceId + &quot;_comments-block-wrapper&quot;'>
+
+<dl expr:class='data:post.avatarIndentClass' id='comments-block'>
+
+<b:loop values='data:post.comments' var='comment'>
+
+<dt expr:class='&quot;comment-author &quot; + data:comment.authorClass' expr:id='data:comment.anchorName'>
+
+<b:if cond='data:comment.favicon'>
+
+<img expr:src='data:comment.favicon' height='16px' style='margin-bottom:-2px;' width='16px'/>
+
+</b:if>
+
+<a expr:name='data:comment.anchorName'/>
+
+<b:if cond='data:blog.enabledCommentProfileImages'>
+
+<data:comment.authorAvatarImage/>
+
+</b:if>
+
+<b:if cond='data:comment.authorUrl'>
+
+<a expr:href='data:comment.authorUrl' rel='nofollow'><data:comment.author/></a>
+
+<b:else/>
+
+<data:comment.author/>
+
+</b:if>
+
+<data:commentPostedByMsg/>
+
+</dt>
+
+<dd class='comment-body' expr:id='data:widget.instanceId + data:comment.cmtBodyIdPostfix'>
+
+<b:if cond='data:comment.isDeleted'>
+
+<span class='deleted-comment'><data:comment.body/></span>
+
+<b:else/>
+
+<p>
+
+<data:comment.body/>
+
+</p>
+
+</b:if>
+
+</dd>
+
+<dd class='comment-footer'>
+
+<span class='comment-timestamp'>
+
+<a expr:href='data:comment.url' title='comment permalink'>
+
+<data:comment.timestamp/>
+
+</a>
+
+<b:include data='comment' name='commentDeleteIcon'/>
+
+</span>
+
+</dd>
+
+</b:loop>
+
+</dl>
+
+</div>
+
+
+
+
+<b:if cond='data:post.commentPagingRequired'>
+
+<span class='paging-control-container'>
+
+<a expr:class='data:post.oldLinkClass' expr:href='data:post.oldestLinkUrl'>
+
+<data:post.oldestLinkText/>
+
+</a>
+
+<a expr:class='data:post.oldLinkClass' expr:href='data:post.olderLinkUrl'>
+
+<data:post.olderLinkText/>
+
+</a>
+
+&#160;
+
+<data:post.commentRangeText/>
+
+&#160;
+
+<a expr:class='data:post.newLinkClass' expr:href='data:post.newerLinkUrl'>
+
+<data:post.newerLinkText/>
+
+</a>
+
+<a expr:class='data:post.newLinkClass' expr:href='data:post.newestLinkUrl'>
+
+<data:post.newestLinkText/>
+
+</a>
+
+</span>
+
+</b:if>
+
+
+
+
+<p class='comment-footer'>
+
+<b:if cond='data:post.embedCommentForm'>
+
+<b:if cond='data:post.allowNewComments'>
+
+<b:include data='post' name='comment-form'/>
+
+<b:else/>
+
+<data:post.noNewCommentsText/>
+
+</b:if>
+
+<b:elseif cond='data:post.allowComments'/>
+
+<a expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'><data:postCommentMsg/></a>
+
+</b:if>
+
+</p>
+
+</b:if>
+
+<b:if cond='data:showCmtPopup'>
+
+<div id='comment-popup'>
+
+<iframe allowtransparency='true' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'>
+
+</iframe>
+
+</div>
+
+</b:if>
+
+
+
+
+<div id='backlinks-container'>
+
+<div expr:id='data:widget.instanceId + &quot;_backlinks-container&quot;'>
+
+<b:include cond='data:post.showBacklinks' data='post' name='backlinks'/>
+
+</div>
+
+</div>
+
+</div>
+
+</b:includable>
+    <b:includable id='feedLinks'>
+
+<b:if cond='data:blog.pageType != &quot;item&quot;'>
+
+<b:if cond='data:feedLinks'>
+
+<div class='blog-feeds'>
+
+<b:include data='feedLinks' name='feedLinksBody'/>
+
+</div>
+
+</b:if>
+
+
+
+
+<b:else/>
+
+<div class='post-feeds'>
+
+<b:loop values='data:posts' var='post'>
+
+<b:include cond='data:post.allowComments and data:post.feedLinks' data='post.feedLinks' name='feedLinksBody'/>
+
+</b:loop>
+
+</div>
+
+</b:if>
+
+</b:includable>
+    <b:includable id='feedLinksBody' var='links'>
+
+<div class='feed-links'>
+
+<data:feedLinksMsg/>
+
+<b:loop values='data:links' var='f'>
+
+<a class='feed-link' expr:href='data:f.url' expr:type='data:f.mimeType' target='_blank'><data:f.name/> (<data:f.feedType/>)</a>
+
+</b:loop>
+
+</div>
+
+</b:includable>
+    <b:includable id='iframe_comments' var='post'>
+
+
+
+
+<b:if cond='data:post.allowIframeComments'>
+
+<script expr:src='data:post.iframeCommentSrc' type='text/javascript'/>
+
+<div class='cmt_iframe_holder' expr:data-href='data:post.url.canonical' expr:data-viewtype='data:post.viewType'/>
+
+
+
+
+<b:if cond='data:post.embedCommentForm == &quot;false&quot;'>
+
+<a expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'><data:postCommentMsg/></a>
+
+</b:if>
+
+</b:if>
+
+</b:includable>
+    <b:includable id='mobile-index-post' var='post'/>
+    <b:includable id='mobile-main' var='top'/>
+    <b:includable id='mobile-nextprev'/>
+    <b:includable id='mobile-post' var='post'/>
+    <b:includable id='nextprev'>
+
+<div class='blog-pager' id='blog-pager'>
+
+<b:if cond='data:newerPageUrl'>
+
+<div id='blog-pager-newer-link'>
+
+<a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-newer-link&quot;' expr:title='data:newerPageTitle'><data:newerPageTitle/></a>
+
+</div>
+
+</b:if>
+
+
+
+
+<b:if cond='data:olderPageUrl'>
+
+<div id='blog-pager-older-link'>
+
+<a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-older-link&quot;' expr:title='data:olderPageTitle'><data:olderPageTitle/></a>
+
+</div>
+
+</b:if>
+
+
+
+
+<b:if cond='data:mobileLinkUrl'>
+
+<div class='blog-mobile-link'>
+
+<a expr:href='data:mobileLinkUrl'><data:mobileLinkMsg/></a>
+
+</div>
+
+</b:if>
+
+
+
+
+</div>
+
+<div class='clear'/>
+
+</b:includable>
+    <b:includable id='post' var='post'>
+
+
+
+
+<b:if cond='data:blog.pageType == &quot;item&quot;'>
+
+<!-- &lt;div class=&#39;post hentry uncustomized-post-template&#39; itemprop=&#39;blogPost&#39; itemscope=&#39;itemscope&#39; itemtype=&#39;http://schema.org/BlogPosting&#39;&gt;
+
+-->
+
+
+
+
+&lt;article&gt;
+
+</b:if>
+
+
+
+
+<b:if cond='data:post.firstImageUrl'>
+
+<meta expr:content='data:post.firstImageUrl' itemprop='image_url'/>
+
+</b:if>
+
+<meta expr:content='data:blog.blogId' itemprop='blogId'/>
+
+<meta expr:content='data:post.id' itemprop='postId'/>
+
+
+
+
+<a expr:name='data:post.id'/>
+
+
+
+
+
+
+<b:if cond='data:post.title'>
+
+<h3 class='post-title entry-title' itemprop='name'>
+
+<a expr:href='data:post.link ? data:post.link : data:post.url'><data:post.title/></a> 
+
+</h3>
+
+</b:if>
+
+
+
+
+<!--태그 위치 여기로 바꿈-->
+
+<div class='post-labels'>
+
+
+
+
+
+<b:if cond='data:top.showPostLabels and data:post.labels'>
+
+<!--<data:postLabelsLabel/>-->
+
+<b:loop values='data:post.labels' var='label'>
+
+<a expr:href='data:label.url' rel='tag'><data:label.name/></a><b:if cond='not data:label.isLast'>,</b:if>
+
+</b:loop>
+
+</b:if>
+
+</div>
+
+<!--태그와 날짜 사이-->
+
+<div class='front-date'> - </div>
+
+<!--날짜를 제목 밑으로 오게 바꿈-->
+
+<span class='date'>
+
+<data:post.timestamp/>
+
+</span>
+
+
+
+
+
+
+
+<div class='post-body entry-content' expr:id='&quot;post-body-&quot; + data:post.id' expr:itemprop='(data:blog.metaDescription ? &quot;&quot; : &quot;description &quot;) + &quot;articleBody&quot;'>
+
+<data:post.body/>
+
+</div>
+
+
+
+
+<b:if cond='data:post.hasJumpLink'>
+
+<div class='jump-link'>
+
+<a expr:href='data:post.url + &quot;#more&quot;' expr:title='data:post.title'><data:post.jumpText/></a>
+
+</div>
+
+</b:if>
+
+
+
+
+<div class='post-footer'>
+
+<!--post-labels 있던자리-->
+
+
+
+
+
+
+
+<div class='post-edit'>
+
+<b:include data='post' name='postQuickEdit'/>
+
+</div>
+
+
+
+
+</div>
+
+<b:if cond='data:blog.pageType == &quot;item&quot;'>
+
+<!-- &lt;/div&gt; -->
+
+&lt;/article&gt;
+
+</b:if>
+
+
+
+
+</b:includable>
+    <b:includable id='postQuickEdit' var='post'>
+
+<b:if cond='data:post.editUrl'>
+
+<span expr:class='&quot;item-control &quot; + data:post.adminClass'>
+
+<a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg' target='_blank'>게시물 수정</a>
+
+</span>
+
+</b:if>
+
+
+
+
+</b:includable>
+    <b:includable id='shareButtons' var='post'>
+
+<b:if cond='data:top.showEmailButton'><a class='goog-inline-block share-button sb-email' expr:href='data:post.sharePostUrl + &quot;&amp;target=email&quot;' expr:title='data:top.emailThisMsg' target='_blank'><span class='share-button-link-text'><data:top.emailThisMsg/></span></a></b:if><b:if cond='data:top.showBlogThisButton'><a class='goog-inline-block share-button sb-blog' expr:href='data:post.sharePostUrl + &quot;&amp;target=blog&quot;' expr:onclick='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=270,width=475\&quot;); return false;&quot;' expr:title='data:top.blogThisMsg' target='_blank'><span class='share-button-link-text'><data:top.blogThisMsg/></span></a></b:if><b:if cond='data:top.showTwitterButton'><a class='goog-inline-block share-button sb-twitter' expr:href='data:post.sharePostUrl + &quot;&amp;target=twitter&quot;' expr:title='data:top.shareToTwitterMsg' target='_blank'><span class='share-button-link-text'><data:top.shareToTwitterMsg/></span></a></b:if><b:if cond='data:top.showFacebookButton'><a class='goog-inline-block share-button sb-facebook' expr:href='data:post.sharePostUrl + &quot;&amp;target=facebook&quot;' expr:onclick='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=430,width=640\&quot;); return false;&quot;' expr:title='data:top.shareToFacebookMsg' target='_blank'><span class='share-button-link-text'><data:top.shareToFacebookMsg/></span></a></b:if><b:if cond='data:top.showPinterestButton'><a class='goog-inline-block share-button sb-pinterest' expr:href='data:post.sharePostUrl + &quot;&amp;target=pinterest&quot;' expr:title='data:top.shareToPinterestMsg' target='_blank'><span class='share-button-link-text'><data:top.shareToPinterestMsg/></span></a></b:if><b:if cond='data:top.showPlusOne'><div class='goog-inline-block google-plus-share-container'><data:post.googlePlusShareTag/></div></b:if>
+
+</b:includable>
+    <b:includable id='status-message'>
+
+<b:if cond='data:navMessage'>
+
+<div class='status-msg-wrap'>
+
+<div class='status-msg-body'>
+
+<data:navMessage/>
+
+</div>
+
+<div class='status-msg-border'>
+
+<div class='status-msg-bg'>
+
+<div class='status-msg-hidden'><data:navMessage/></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div style='clear: both;'/>
+
+</b:if>
+
+</b:includable>
+    <b:includable id='threaded-comment-form' var='post'>
+
+<div class='comment-form'>
+
+<a name='comment-form'/>
+
+<b:if cond='data:mobile'>
+
+<p><data:blogCommentMessage/></p>
+
+<data:blogTeamBlogMessage/>
+
+<a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+
+<iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' style='display: none' width='100%'/>
+
+<b:else/>
+
+<p><data:blogCommentMessage/></p>
+
+<data:blogTeamBlogMessage/>
+
+<a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+
+<iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+
+</b:if>
+
+<data:post.cmtfpIframe/>
+
+<script type='text/javascript'>
+
+BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+
+</script>
+
+</div>
+
+</b:includable>
+    <b:includable id='threaded_comment_js' var='post'>
+
+<script async='async' expr:src='data:post.commentSrc' type='text/javascript'/>
+
+
+
+
+<script type='text/javascript'>
+
+(function() {
+
+var items = <data:post.commentJso/>;
+
+var msgs = <data:post.commentMsgs/>;
+
+var config = <data:post.commentConfig/>;
+
+
+
+
+// <![CDATA[
+
+var cursor = null;
+
+if (items && items.length > 0) {
+
+cursor = parseInt(items[items.length - 1].timestamp) + 1;
+
+}
+
+
+
+
+var bodyFromEntry = function(entry) {
+
+var text = (entry &&
+
+((entry.content && entry.content.$t) ||
+
+(entry.summary && entry.summary.$t))) ||
+
+'';
+
+if (entry && entry.gd$extendedProperty) {
+
+for (var k in entry.gd$extendedProperty) {
+
+if (entry.gd$extendedProperty[k].name == 'blogger.contentRemoved') {
+
+return '<span class="deleted-comment">' + text + '</span>';
+
+}
+
+}
+
+}
+
+return text;
+
+}
+
+
+
+
+var parse = function(data) {
+
+cursor = null;
+
+var comments = [];
+
+if (data && data.feed && data.feed.entry) {
+
+for (var i = 0, entry; entry = data.feed.entry[i]; i++) {
+
+var comment = {};
+
+// comment ID, parsed out of the original id format
+
+var id = /blog-(\d+).post-(\d+)/.exec(entry.id.$t);
+
+comment.id = id ? id[2] : null;
+
+comment.body = bodyFromEntry(entry);
+
+comment.timestamp = Date.parse(entry.published.$t) + '';
+
+if (entry.author && entry.author.constructor === Array) {
+
+var auth = entry.author[0];
+
+if (auth) {
+
+comment.author = {
+
+name: (auth.name ? auth.name.$t : undefined),
+
+profileUrl: (auth.uri ? auth.uri.$t : undefined),
+
+avatarUrl: (auth.gd$image ? auth.gd$image.src : undefined)
+
+};
+
+}
+
+}
+
+if (entry.link) {
+
+if (entry.link[2]) {
+
+comment.link = comment.permalink = entry.link[2].href;
+
+}
+
+if (entry.link[3]) {
+
+var pid = /.*comments\/default\/(\d+)\?.*/.exec(entry.link[3].href);
+
+if (pid && pid[1]) {
+
+comment.parentId = pid[1];
+
+}
+
+}
+
+}
+
+comment.deleteclass = 'item-control blog-admin';
+
+if (entry.gd$extendedProperty) {
+
+for (var k in entry.gd$extendedProperty) {
+
+if (entry.gd$extendedProperty[k].name == 'blogger.itemClass') {
+
+comment.deleteclass += ' ' + entry.gd$extendedProperty[k].value;
+
+} else if (entry.gd$extendedProperty[k].name == 'blogger.displayTime') {
+
+comment.displayTime = entry.gd$extendedProperty[k].value;
+
+}
+
+}
+
+}
+
+comments.push(comment);
+
+}
+
+}
+
+return comments;
+
+};
+
+
+
+
+var paginator = function(callback) {
+
+if (hasMore()) {
+
+var url = config.feed + '?alt=json&v=2&orderby=published&reverse=false&max-results=50';
+
+if (cursor) {
+
+url += '&published-min=' + new Date(cursor).toISOString();
+
+}
+
+window.bloggercomments = function(data) {
+
+var parsed = parse(data);
+
+cursor = parsed.length < 50 ? null
+
+: parseInt(parsed[parsed.length - 1].timestamp) + 1
+
+callback(parsed);
+
+window.bloggercomments = null;
+
+}
+
+url += '&callback=bloggercomments';
+
+var script = document.createElement('script');
+
+script.type = 'text/javascript';
+
+script.src = url;
+
+document.getElementsByTagName('head')[0].appendChild(script);
+
+}
+
+};
+
+var hasMore = function() {
+
+return !!cursor;
+
+};
+
+var getMeta = function(key, comment) {
+
+if ('iswriter' == key) {
+
+var matches = !!comment.author
+
+&& comment.author.name == config.authorName
+
+&& comment.author.profileUrl == config.authorUrl;
+
+return matches ? 'true' : '';
+
+} else if ('deletelink' == key) {
+
+return config.baseUri + '/delete-comment.g?blogID='
+
++ config.blogId + '&postID=' + comment.id;
+
+} else if ('deleteclass' == key) {
+
+return comment.deleteclass;
+
+}
+
+return '';
+
+};
+
+
+
+
+var replybox = null;
+
+var replyUrlParts = null;
+
+var replyParent = undefined;
+
+
+
+
+var onReply = function(commentId, domId) {
+
+if (replybox == null) {
+
+// lazily cache replybox, and adjust to suit this style:
+
+replybox = document.getElementById('comment-editor');
+
+if (replybox != null) {
+
+replybox.height = '250px';
+
+replybox.style.display = 'block';
+
+replyUrlParts = replybox.src.split('#');
+
+}
+
+}
+
+if (replybox && (commentId !== replyParent)) {
+
+replybox.src = '';
+
+document.getElementById(domId).insertBefore(replybox, null);
+
+replybox.src = replyUrlParts[0]
+
++ (commentId ? '&parentID=' + commentId : '')
+
++ '#' + replyUrlParts[1];
+
+replyParent = commentId;
+
+}
+
+};
+
+
+
+
+var hash = (window.location.hash || '#').substring(1);
+
+var startThread, targetComment;
+
+if (/^comment-form_/.test(hash)) {
+
+startThread = hash.substring('comment-form_'.length);
+
+} else if (/^c[0-9]+$/.test(hash)) {
+
+targetComment = hash.substring(1);
+
+}
+
+
+
+
+// Configure commenting API:
+
+var configJso = {
+
+'maxDepth': config.maxThreadDepth
+
+};
+
+var provider = {
+
+'id': config.postId,
+
+'data': items,
+
+'loadNext': paginator,
+
+'hasMore': hasMore,
+
+'getMeta': getMeta,
+
+'onReply': onReply,
+
+'rendered': true,
+
+'initComment': targetComment,
+
+'initReplyThread': startThread,
+
+'config': configJso,
+
+'messages': msgs
+
+};
+
+
+
+
+var render = function() {
+
+if (window.goog && window.goog.comments) {
+
+var holder = document.getElementById('comment-holder');
+
+window.goog.comments.render(holder, provider);
+
+}
+
+};
+
+
+
+
+// render now, or queue to render when library loads:
+
+if (window.goog && window.goog.comments) {
+
+render();
+
+} else {
+
+window.goog = window.goog || {};
+
+window.goog.comments = window.goog.comments || {};
+
+window.goog.comments.loadQueue = window.goog.comments.loadQueue || [];
+
+window.goog.comments.loadQueue.push(render);
+
+}
+
+})();
+
+// ]]>
+
+</script>
+
+</b:includable>
+    <b:includable id='threaded_comments' var='post'>
+
+<div class='comments' id='comments'>
+
+<a name='comments'/>
+
+<div class='comments-content'>
+
+<b:include cond='data:post.embedCommentForm' data='post' name='threaded_comment_js'/>
+
+<div id='comment-holder'>
+
+<data:post.commentHtml/>
+
+</div>
+
+</div>
+
+
+
+
+<p class='comment-footer'>
+
+<b:if cond='data:post.allowNewComments'>
+
+<b:include data='post' name='threaded-comment-form'/>
+
+<b:else/>
+
+<data:post.noNewCommentsText/>
+
+</b:if>
+
+</p>
+
+
+
+
+<b:if cond='data:showCmtPopup'>
+
+<div id='comment-popup'>
+
+<iframe allowtransparency='true' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'>
+
+</iframe>
+
+</div>
+
+</b:if>
+
+
+
+
+<div id='backlinks-container'>
+
+<div expr:id='data:widget.instanceId + &quot;_backlinks-container&quot;'>
+
+<b:include cond='data:post.showBacklinks' data='post' name='backlinks'/>
+
+</div>
+
+</div>
+
+</div>
+
+</b:includable>
+  </b:widget>
+  <b:widget id='HTML3' locked='false' title='' type='HTML' version='1'>
+    <b:widget-settings>
+      <b:widget-setting name='content'>&lt;!--
+
+https://blog.g1s.kr/2017/07/postlist.html
+
+version : 2.0.2.4
+
+필요 라이브러리
+
+- jQuery.js
+
+- angular.js : https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js
+
+--&gt;
+
+&lt;style&gt;
+
+#G1sPostList {
+
+display:none;
+
+list-style: none;
+
+background-color: rgba(255, 255, 255);
+
+padding: 10px 10px 0 10px;
+
+border: 1px solid #808080;
+
+}
+
+#G1sPostList .g1sNow a {
+
+font-weight: bold;
+
+}
+
+#G1sPostList .g1sHeader .g1sRight{
+
+float:right;
+
+}
+
+#G1sPostList .g1sHeader a{
+
+color: gray;
+
+}
+
+#G1sPostList .g1sList .g1sTitle {
+
+clear:both;
+
+}
+
+#G1sPostList .g1sList .g1sTitle a {
+
+clear:both;
+
+color: black;
+
+font-size: 14px;
+
+}
+
+#G1sPostList .g1sList .g1sInfo a {
+
+color : darkgreen;
+
+font-size: 0.8em;
+
+}
+
+#G1sPostList .g1sList .g1sInfo .g1sPublished {
+
+float:right;
+
+}
+
+#G1sPostList .g1sPages {
+
+text-align: center;
+
+width: 100%;
+
+}
+
+#G1sPostList .g1sPages ul li {
+
+display:inline-block
+
+}
+
+#G1sPostList .g1sPages a {
+
+padding:5px;
+
+color: black;
+
+}
+
+#G1sPostList input[type=text] {
+
+width: 200px;
+
+}
+
+
+
+&lt;/style&gt;
+
+
+
+
+
+&lt;div ng-controller=&quot;G1sPostList&quot; id=&quot;G1sPostList&quot;&gt;
+
+&lt;div class=&quot;g1sHeader&quot;&gt;
+
+&lt;b class=&quot;g1sInfo&quot;&gt;{{ label!=&#39;&#39; ? &#39;Label : &#39; : (q!=&#39;&#39; ? &#39;검색 : &#39; : &#39;전체 리스트&#39;) }}&lt;/b&gt;
+
+&lt;a ng-click=&quot;goLabel()&quot; ng-show=&quot;label != &#39;&#39;&quot; href=&quot;javascript:void(0)&quot; class=&quot;btn&quot;&gt;{{ label }}&lt;/a&gt;
+
+&lt;a ng-click=&quot;goLabel()&quot; ng-show=&quot;q != &#39;&#39;&quot; href=&quot;javascript:void(0)&quot; class=&quot;btn&quot;&gt;{{ q }}&lt;/a&gt;
+
+&lt;a ng-click=&quot;goMonth()&quot; ng-show=&quot;pubs != &#39;&#39;&quot; href=&quot;javascript:void(0)&quot; class=&quot;btn&quot;&gt;{{ (&#39;(&#39;+(pubs|date:&#39;yyyy-MM&#39;)+&#39;)&#39;) }}&lt;/a&gt;
+
+&lt;span class=&quot;g1sRight&quot;&gt;
+
+&lt;select ng-show=&quot;q == &#39;&#39;&quot; ng-model=&quot;orderby&quot; ng-options=&quot;x.value as x.name for x in orders&quot; ng-change=&quot;goPage(1)&quot;&gt;&lt;/select&gt;
+
+&lt;select ng-hide=&quot;q == &#39;&#39;&quot; ng-model=&quot;orderby2&quot; ng-options=&quot;y.value as y.name for y in orders2&quot; ng-change=&quot;goPage(1)&quot;&gt;&lt;/select&gt;
+
+&lt;select ng-model=&quot;label&quot; ng-change=&quot;goLabel(label)&quot;&gt;
+
+&lt;option value=&quot;&quot; /&gt;= 카테고리 =
+
+&lt;option ng-repeat=&quot;category in feed.category&quot; value=&quot;{{category.term}}&quot; /&gt;{{category.term}}
+
+&lt;/select&gt;
+
+&lt;/span&gt;
+
+&lt;span class=&quot;g1sRight&quot;&gt;
+
+&lt;input type=&quot;text&quot; ng-model=&quot;tempQ&quot; ng-keypress=&quot;search($event)&quot; placeholder=&quot;검색어 입력후 Enter를 누르세요&quot;/&gt;
+
+&lt;/span&gt;
+
+&lt;/div&gt;
+
+&lt;ul class=&quot;g1sList&quot;&gt;
+
+&lt;li ng-repeat=&quot;post in posts&quot; &gt;
+
+&lt;div class=&quot;g1sTitle {{ (link.href==url?&#39;g1sNow&#39;:&#39;a&#39;) }}&quot; ng-repeat=&quot;link in post.link | filter:{rel:&#39;alternate&#39;} &quot;&gt;
+
+&lt;a href=&quot;{{link.href|url:param}}&quot;&gt;{{link.title|decode}} ({{post.thr$total.$t}})&lt;/a&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&quot;g1sInfo&quot;&gt;
+
+&lt;span class=&quot;g1sCategory&quot;&gt;
+
+&lt;a ng-repeat=&quot;category in post.category&quot; ng-click=&quot;goLabel(category.term)&quot; href=&quot;javascript:void(0)&quot;&gt;[{{category.term}}]&lt;/a&gt;
+
+&lt;/span&gt;
+
+&lt;span class=&quot;g1sPublished&quot;&gt;
+
+&lt;a ng-click=&quot;goMonth(post.published.$t)&quot; href=&quot;javascript:void(0)&quot;&gt;{{post.published.$t | bdate : &#39;yyyy-MM-dd HH:mm:ss&#39;}}&lt;/a&gt;
+
+&lt;/span&gt;
+
+&lt;/div&gt;
+
+&lt;/li&gt;
+
+&lt;/ul&gt;
+
+&lt;div ng-show=&quot;pages&quot; class=&quot;g1sPages&quot;&gt;
+
+&lt;ul&gt;
+
+&lt;li ng-show=&quot;pages[0]!=1&quot;&gt;&lt;a ng-click=&quot;goPage(pages[0]-1)&quot; href=&quot;javascript:void(0)&quot; class=&quot;g1sPrev&quot;&gt;prev&lt;/a&gt;&lt;/li&gt;
+
+&lt;li ng-repeat=&quot;page in pages&quot; class=&quot;g1sPage {{page==now?&#39;g1sNow&#39;:&#39;&#39;}}&quot;&gt;
+
+&lt;a ng-click=&quot;goPage(page)&quot; href=&quot;javascript:void(0)&quot;&gt;{{page}}&lt;/a&gt;
+
+&lt;/li&gt;
+
+&lt;li ng-show=&quot;isNext&quot;&gt;&lt;a ng-click=&quot;goPage(pages[0]+maxPage)&quot; href=&quot;javascript:void(0)&quot; class=&quot;g1sNext&quot;&gt;next&lt;/a&gt;&lt;/li&gt;
+
+&lt;/ul&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;script&gt;
+
+function G1sPostList(maxPost, maxPage, orderby, orderby2){
+
+var app = getAngular();
+
+if(!app) return;
+
+orderby = orderby||&#39;published&#39;
+
+orderby2 = orderby2||&#39;published&#39;
+
+
+
+app.controller(&#39;G1sPostList&#39;, function($scope, $http) {
+
+{ /** init **/
+
+$scope.url = location.href.indexOf(&#39;?&#39;)&gt;0?location.href.substr(0, location.href.indexOf(&#39;?&#39;)):location.href;
+
+$scope.param = getParam();
+
+var urls = $scope.url.split(&quot;/&quot;);
+
+if(urls.length &gt; 4 &amp;&amp; urls[3] == &#39;search&#39; &amp;&amp; urls[4] == &#39;label&#39;){
+
+$scope.param[&#39;g1sLabel&#39;] = decodeURIComponent(urls[5]);
+
+}
+
+$scope.maxPost = maxPost;
+
+$scope.maxPage = maxPage;
+
+$scope.orderby = ($scope.param[&#39;g1sOrder&#39;]?$scope.param[&#39;g1sOrder&#39;]:orderby)||&#39;published&#39;;
+
+$scope.orderby2 = ($scope.param[&#39;g1sOrder2&#39;]?$scope.param[&#39;g1sOrder2&#39;]:orderby2)||&#39;search&#39;;
+
+$scope.now = $scope.param[&#39;g1sNow&#39;]?$scope.param[&#39;g1sNow&#39;]:1;
+
+$scope.label = $scope.param[&#39;g1sLabel&#39;]?$scope.param[&#39;g1sLabel&#39;]:&#39;&#39;;
+
+$scope.pubs = $scope.param[&#39;g1sPubls&#39;]?$scope.param[&#39;g1sPubls&#39;]:&#39;&#39;;
+
+$scope.pube = $scope.param[&#39;g1sPuble&#39;]?$scope.param[&#39;g1sPuble&#39;]:&#39;&#39;;
+
+$scope.q = $scope.tempQ= $scope.param[&#39;g1sQ&#39;]?$scope.param[&#39;g1sQ&#39;]:&#39;&#39;;
+
+$scope.orders = [{value:&#39;published&#39;, name:&#39;게시일순&#39;}, {value:&#39;updated&#39;, name:&#39;업데이트순&#39;}];
+
+$scope.orders2 = [{value:&#39;search&#39;, name:&#39;검색순&#39;}, {value:&#39;published&#39;, name:&#39;게시일순&#39;}, {value:&#39;updated&#39;, name:&#39;업데이트순&#39;}];
+
+render();
+
+}
+
+
+
+$scope.search = function($event){
+
+var keyCode = window.event ? $event.keyCode : $event.which;
+
+if(keyCode == 13){
+
+$scope.label = &#39;&#39;;
+
+$scope.q = $scope.tempQ;
+
+$scope.qMode = false;
+
+$scope.goPage(1);
+
+}
+
+};
+
+
+
+/** event func **/
+
+$scope.goLabel = function(p){
+
+$scope.label = (!p)?&#39;&#39;:p;
+
+$scope.q = $scope.tempQ = &#39;&#39;;
+
+$scope.goPage(1);
+
+}
+
+
+
+$scope.goMonth = function(p){
+
+if(!p){
+
+$scope.pubs = &#39;&#39;;
+
+$scope.pube = &#39;&#39;;
+
+} else { 
+
+$scope.pubs = p.substr(0,7)+&#39;-01T00:00:00&#39;;
+
+$scope.pube = p.substr(0,7)+&#39;-31T24:00:00&#39;;
+
+}
+
+$scope.goPage(1);
+
+}
+
+
+
+$scope.goYear = function(p){
+
+if(!p){
+
+goMonth();
+
+} else {
+
+$scope.pubs = p.substr(0,4)+&#39;-01-01T00:00:00&#39;;
+
+$scope.pube = p.substr(0,4)+&#39;-12-31T24:00:00&#39;;
+
+}
+
+$scope.goPage(1);
+
+}
+
+
+
+$scope.goPage = function(p){
+
+$scope.now = p;
+
+render();
+
+}
+
+
+
+/** private func **/
+
+function render(){
+
+setParam()
+
+var url = &#39;/feeds/posts/summary&#39;;
+
+if($scope.q){
+
+if($scope.qMode){
+
+return setResult();
+
+} else {
+
+url += &#39;?max-results=&#39;+500;
+
+url += $scope.q?(&#39;&amp;q=&#39;+$scope.q):&#39;&#39;;
+
+}
+
+} else {
+
+url += $scope.label?(&#39;/-/&#39;+encodeURIComponent($scope.label)):&#39;&#39;;
+
+url += &#39;?max-results=&#39;+maxPost;
+
+url += &#39;&amp;start-index=&#39;+(($scope.now-1)*maxPost+1);
+
+url += $scope.orderby?(&#39;&amp;orderby=&#39;+$scope.orderby):&#39;&#39;;
+
+url += $scope.pubs?(&#39;&amp;published-min=&#39;+$scope.pubs+&#39;&amp;published-max=&#39;+$scope.pube):&#39;&#39;;
+
+}
+
+url += &#39;&amp;alt=json&#39;;
+
+$http.get( url ).then( function(res){
+
+$scope.feed = res.data.feed;
+
+setResult();
+
+});
+
+}
+
+
+
+function setResult(){
+
+$scope.total = $scope.feed.openSearch$totalResults.$t;
+
+$scope.pages = getPages($scope.now, maxPost, maxPage, $scope.total);
+
+$scope.isNext= $scope.pages[0]+(maxPage-1) &lt; $scope.total/maxPost;
+
+if($scope.q){
+
+if(!$scope.qMode){
+
+$scope.qMode = true;
+
+for(var i=0; i&lt;$scope.feed.entry.length; i++){
+
+$scope.feed.entry[i].index = i;
+
+}
+
+$scope.orderby2_ = &#39;search&#39;;
+
+}
+
+
+
+if($scope.orderby2 != $scope.orderby2_){
+
+$scope.feed.entry.sort(function(a, b) {
+
+if($scope.orderby2 == &#39;published&#39;){
+
+return a.published.$t &gt; b.published.$t?-1:1;
+
+} else if($scope.orderby2 == &#39;updated&#39;){
+
+return a.updated.$t &gt; b.updated.$t?-1:1;
+
+} 
+
+return a.index - b.index;
+
+});
+
+$scope.orderby2_ = $scope.orderby2;
+
+}
+
+
+
+$scope.posts = [];
+
+for(var i=0; i&lt;maxPost; i++){
+
+var page = ($scope.now-1) * maxPost + i
+
+var post = $scope.feed.entry[page];
+
+if(post){
+
+$scope.posts.push(post);
+
+} else {
+
+break;
+
+}
+
+}
+
+} else {
+
+$scope.qMode = false;
+
+$scope.posts = $scope.feed.entry;
+
+}
+
+$(&#39;#G1sPostList&#39;).show();
+
+}
+
+
+
+function getPages(n, m1, m2, t){
+
+var s = parseInt((n-1)/m2)*m2;
+
+var e = s+m2;
+
+if(e&gt;(t-1)/m1+1) e = parseInt((t-1)/m1)+1;
+
+var r = [];
+
+for(var i=s+1; i&lt;=e; i++){ r.push(i); }
+
+return r;
+
+}
+
+
+
+function setParam(){
+
+$scope.param.g1sNow = $scope.now==1?&#39;&#39;:$scope.now;
+
+$scope.param.g1sLabel = $scope.label;
+
+$scope.param.g1sPubls = $scope.pubs;
+
+$scope.param.g1sPuble = $scope.pube;
+
+$scope.param.g1sOrder = $scope.orderby==orderby?&#39;&#39;:$scope.orderby;
+
+$scope.param.g1sOrder2 = $scope.orderby2==orderby2?&#39;&#39;:$scope.orderby2;
+
+$scope.param.g1sQ = $scope.tempQ;
+
+}
+
+});
+
+
+
+app.filter(&#39;url&#39;, function() {
+
+return function(input, param) {
+
+return addParam(input, param);
+
+}
+
+});
+
+
+
+app.filter(&#39;decode&#39;, function() {
+
+return function(input, param) {
+
+return input.replace(/&amp;amp;/g, &quot;&amp;&quot;)
+
+.replace(/&amp;lt;/g, &quot;&lt;&quot;)
+
+.replace(/&amp;gt;/g, &quot;&gt;&quot;);
+
+}
+
+});
+
+
+
+app.filter(&#39;bdate&#39;, function() {
+
+return function(input, param) {
+
+var d = new Date(input.substr(0, 23));
+
+return d.format(param);
+
+}
+
+});
+
+
+
+function getAngular(){
+
+var appName = $(&#39;[ng-app]&#39;).attr(&#39;ng-app&#39;);
+
+if(!appName){ appName = &#39;app&#39;; $(&#39;html&#39;).attr(&#39;ng-app&#39;, appName) }
+
+if(typeof angular == &#39;undefined&#39;) {
+
+console.log(&#39;header에 angular.js를 추가해 주세요.\n&lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js&quot;/&gt;&#39;);
+
+return null;
+
+}
+
+return angular.module(appName, []);
+
+}
+
+function getParam(){
+
+var u = location.href;
+
+var p = u.indexOf(&#39;?&#39;)&lt;0?&#39;&#39;:u.substr(u.indexOf(&#39;?&#39;)+1);
+
+var p1 = p.split(&#39;&amp;&#39;);
+
+var pp = {};
+
+for(var i=0; i&lt;p1.length; i++){
+
+var p2 = p1[i].split(&#39;=&#39;);
+
+if(p2.length &gt; 1){
+
+pp[p2[0]] = decodeURIComponent(p2[1]);
+
+}
+
+}
+
+return pp;
+
+}
+
+function addParam(u, p){
+
+var pp = &#39;&#39;;
+
+if(typeof p == &#39;object&#39;){
+
+for(var pk in p){
+
+if(p[pk]){
+
+pp += pk + &#39;=&#39; + p[pk] + &#39;&amp;&#39;;
+
+}
+
+}
+
+} else {
+
+pp = p;
+
+}
+
+return u + (!pp?&#39;&#39;:(u.indexOf(&#39;?&#39;)&gt;0?&#39;&amp;&#39;:&#39;?&#39;+pp));
+
+}
+
+}
+
+/* date format */
+
+if(new Date().format == undefined){
+
+String.prototype.string = function(len){var s = &#39;&#39;, i = 0; while (i++ &lt; len) { s += this; } return s;};
+
+String.prototype.zf = function(len){return &quot;0&quot;.string(len - this.length) + this;};
+
+Number.prototype.zf = function(len){return this.toString().zf(len);};
+
+Date.prototype.format = function(f) {
+
+if (!this.valueOf()) return &quot; &quot;;
+
+
+
+var weekName = [&quot;일요일&quot;, &quot;월요일&quot;, &quot;화요일&quot;, &quot;수요일&quot;, &quot;목요일&quot;, &quot;금요일&quot;, &quot;토요일&quot;];
+
+var d = this;
+
+
+
+return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+
+switch ($1) {
+
+case &quot;yyyy&quot;: return d.getFullYear();
+
+case &quot;yy&quot;: return (d.getFullYear() % 1000).zf(2);
+
+case &quot;MM&quot;: return (d.getMonth() + 1).zf(2);
+
+case &quot;dd&quot;: return d.getDate().zf(2);
+
+case &quot;E&quot;: return weekName[d.getDay()];
+
+case &quot;HH&quot;: return d.getHours().zf(2);
+
+case &quot;hh&quot;: return ((h = d.getHours() % 12) ? h : 12).zf(2);
+
+case &quot;mm&quot;: return d.getMinutes().zf(2);
+
+case &quot;ss&quot;: return d.getSeconds().zf(2);
+
+case &quot;a/p&quot;: return d.getHours() &lt; 12 ? &quot;오전&quot; : &quot;오후&quot;;
+
+default: return $1;
+
+}
+
+});
+
+};
+
+}
+
+G1sPostList(10, 10, &#39;published&#39;, &#39;published&#39;);
+
+&lt;/script&gt;
+
+
+
+
+&lt;!--포스트수,페이지수,기본정렬--&gt;</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main'>
+
+<!-- only display title if it's non-empty -->
+
+<b:if cond='data:title != &quot;&quot;'>
+
+<h2 class='title'><data:title/></h2>
+
+</b:if>
+
+<div class='widget-content'>
+
+<data:content/>
+
+</div>
+
+
+
+
+<b:include name='quickedit'/>
+
+</b:includable>
+  </b:widget>
+</b:section>
+
+
+
+
+
+
+<aside>
+
+
+
+<b:section id='sidebar'>
+  <b:widget id='Label1' locked='false' title='blog' type='Label'>
+    <b:widget-settings>
+      <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+      <b:widget-setting name='display'>LIST</b:widget-setting>
+      <b:widget-setting name='selectedLabelsList'>blogger,think</b:widget-setting>
+      <b:widget-setting name='showType'>USER_SELECTED</b:widget-setting>
+      <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main'>
+  <b:if cond='data:title != &quot;&quot;'>
+    <h2><data:title/></h2>
+  </b:if>
+  <div expr:class='&quot;widget-content &quot; + data:display + &quot;-label-widget-content&quot;'>
+    <b:if cond='data:display == &quot;list&quot;'>
+      <ul>
+        <b:loop values='data:labels' var='label'>
+          <li>
+            <b:if cond='data:blog.url == data:label.url'>
+              <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+            <b:else/>
+              <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+            </b:if>
+            <b:if cond='data:showFreqNumbers'>
+              <span dir='ltr'>(<data:label.count/>)</span>
+            </b:if>
+          </li>
+        </b:loop>
+      </ul>
+    <b:else/>
+      <b:loop values='data:labels' var='label'>
+        <span expr:class='&quot;label-size label-size-&quot; + data:label.cssSize'>
+          <b:if cond='data:blog.url == data:label.url'>
+            <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+          <b:else/>
+            <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+          </b:if>
+          <b:if cond='data:showFreqNumbers'>
+            <span class='label-count' dir='ltr'>(<data:label.count/>)</span>
+          </b:if>
+        </span>
+      </b:loop>
+    </b:if>
+    <b:include name='quickedit'/>
+  </div>
+</b:includable>
+  </b:widget>
+  <b:widget id='Label2' locked='false' title='언어와문화' type='Label'>
+    <b:widget-settings>
+      <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+      <b:widget-setting name='display'>LIST</b:widget-setting>
+      <b:widget-setting name='selectedLabelsList'>JPN</b:widget-setting>
+      <b:widget-setting name='showType'>USER_SELECTED</b:widget-setting>
+      <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main'>
+  <b:if cond='data:title != &quot;&quot;'>
+    <h2><data:title/></h2>
+  </b:if>
+  <div expr:class='&quot;widget-content &quot; + data:display + &quot;-label-widget-content&quot;'>
+    <b:if cond='data:display == &quot;list&quot;'>
+      <ul>
+        <b:loop values='data:labels' var='label'>
+          <li>
+            <b:if cond='data:blog.url == data:label.url'>
+              <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+            <b:else/>
+              <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+            </b:if>
+            <b:if cond='data:showFreqNumbers'>
+              <span dir='ltr'>(<data:label.count/>)</span>
+            </b:if>
+          </li>
+        </b:loop>
+      </ul>
+    <b:else/>
+      <b:loop values='data:labels' var='label'>
+        <span expr:class='&quot;label-size label-size-&quot; + data:label.cssSize'>
+          <b:if cond='data:blog.url == data:label.url'>
+            <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+          <b:else/>
+            <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+          </b:if>
+          <b:if cond='data:showFreqNumbers'>
+            <span class='label-count' dir='ltr'>(<data:label.count/>)</span>
+          </b:if>
+        </span>
+      </b:loop>
+    </b:if>
+    <b:include name='quickedit'/>
+  </div>
+</b:includable>
+  </b:widget>
+  <b:widget id='Label3' locked='false' title='학습' type='Label'>
+    <b:widget-settings>
+      <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+      <b:widget-setting name='display'>LIST</b:widget-setting>
+      <b:widget-setting name='selectedLabelsList'>math,physics</b:widget-setting>
+      <b:widget-setting name='showType'>USER_SELECTED</b:widget-setting>
+      <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main'>
+  <b:if cond='data:title != &quot;&quot;'>
+    <h2><data:title/></h2>
+  </b:if>
+  <div expr:class='&quot;widget-content &quot; + data:display + &quot;-label-widget-content&quot;'>
+    <b:if cond='data:display == &quot;list&quot;'>
+      <ul>
+        <b:loop values='data:labels' var='label'>
+          <li>
+            <b:if cond='data:blog.url == data:label.url'>
+              <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+            <b:else/>
+              <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+            </b:if>
+            <b:if cond='data:showFreqNumbers'>
+              <span dir='ltr'>(<data:label.count/>)</span>
+            </b:if>
+          </li>
+        </b:loop>
+      </ul>
+    <b:else/>
+      <b:loop values='data:labels' var='label'>
+        <span expr:class='&quot;label-size label-size-&quot; + data:label.cssSize'>
+          <b:if cond='data:blog.url == data:label.url'>
+            <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+          <b:else/>
+            <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+          </b:if>
+          <b:if cond='data:showFreqNumbers'>
+            <span class='label-count' dir='ltr'>(<data:label.count/>)</span>
+          </b:if>
+        </span>
+      </b:loop>
+    </b:if>
+    <b:include name='quickedit'/>
+  </div>
+</b:includable>
+  </b:widget>
+  <b:widget id='Label4' locked='false' title='컴퓨터공학' type='Label'>
+    <b:widget-settings>
+      <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+      <b:widget-setting name='display'>LIST</b:widget-setting>
+      <b:widget-setting name='selectedLabelsList'>IT</b:widget-setting>
+      <b:widget-setting name='showType'>USER_SELECTED</b:widget-setting>
+      <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main'>
+  <b:if cond='data:title != &quot;&quot;'>
+    <h2><data:title/></h2>
+  </b:if>
+  <div expr:class='&quot;widget-content &quot; + data:display + &quot;-label-widget-content&quot;'>
+    <b:if cond='data:display == &quot;list&quot;'>
+      <ul>
+        <b:loop values='data:labels' var='label'>
+          <li>
+            <b:if cond='data:blog.url == data:label.url'>
+              <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+            <b:else/>
+              <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+            </b:if>
+            <b:if cond='data:showFreqNumbers'>
+              <span dir='ltr'>(<data:label.count/>)</span>
+            </b:if>
+          </li>
+        </b:loop>
+      </ul>
+    <b:else/>
+      <b:loop values='data:labels' var='label'>
+        <span expr:class='&quot;label-size label-size-&quot; + data:label.cssSize'>
+          <b:if cond='data:blog.url == data:label.url'>
+            <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+          <b:else/>
+            <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+          </b:if>
+          <b:if cond='data:showFreqNumbers'>
+            <span class='label-count' dir='ltr'>(<data:label.count/>)</span>
+          </b:if>
+        </span>
+      </b:loop>
+    </b:if>
+    <b:include name='quickedit'/>
+  </div>
+</b:includable>
+  </b:widget>
+  <b:widget id='Label5' locked='false' title='보안' type='Label'>
+    <b:widget-settings>
+      <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+      <b:widget-setting name='display'>LIST</b:widget-setting>
+      <b:widget-setting name='selectedLabelsList'>forensics</b:widget-setting>
+      <b:widget-setting name='showType'>USER_SELECTED</b:widget-setting>
+      <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+    </b:widget-settings>
+    <b:includable id='main'>
+  <b:if cond='data:title != &quot;&quot;'>
+    <h2><data:title/></h2>
+  </b:if>
+  <div expr:class='&quot;widget-content &quot; + data:display + &quot;-label-widget-content&quot;'>
+    <b:if cond='data:display == &quot;list&quot;'>
+      <ul>
+        <b:loop values='data:labels' var='label'>
+          <li>
+            <b:if cond='data:blog.url == data:label.url'>
+              <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+            <b:else/>
+              <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+            </b:if>
+            <b:if cond='data:showFreqNumbers'>
+              <span dir='ltr'>(<data:label.count/>)</span>
+            </b:if>
+          </li>
+        </b:loop>
+      </ul>
+    <b:else/>
+      <b:loop values='data:labels' var='label'>
+        <span expr:class='&quot;label-size label-size-&quot; + data:label.cssSize'>
+          <b:if cond='data:blog.url == data:label.url'>
+            <span expr:dir='data:blog.languageDirection'><data:label.name/></span>
+          <b:else/>
+            <a expr:dir='data:blog.languageDirection' expr:href='data:label.url'><data:label.name/></a>
+          </b:if>
+          <b:if cond='data:showFreqNumbers'>
+            <span class='label-count' dir='ltr'>(<data:label.count/>)</span>
+          </b:if>
+        </span>
+      </b:loop>
+    </b:if>
+    <b:include name='quickedit'/>
+  </div>
+</b:includable>
+  </b:widget>
+</b:section>
+
+</aside>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+<footer>
+
+<b:section class='foot' id='footer-3' name='Footer' showaddelement='no'>
+  <b:widget id='Attribution1' locked='true' title='' type='Attribution'>
+    <b:widget-settings>
+      <b:widget-setting name='copyright'/>
+    </b:widget-settings>
+    <b:includable id='main'>
+    <div class='widget-content' style='text-align: center;'>
+      <b:if cond='data:attribution != &quot;&quot;'>
+       <data:attribution/>
+      </b:if>
+    </div>
+
+    <b:include name='quickedit'/>
+  </b:includable>
+  </b:widget>
+</b:section>
+
+</footer>
+
+
+
+
+</div>
+
+
+
+<!--
+back to top
+
+<div id='back-top' style='position: fixed; bottom: 10px; right: 10px; z-index: 999; opacity: 0.8;'>
+
+<a href='#' style='display: block; text-decoration: none; color: darkgray; outline: darkgray solid 1px;'>&#9650;</a>
+
+<a href='#footer-3' style='display: block; text-decoration: none; color: darkgray; outline: darkgray solid 1px;'>&#9660;</a>
+
+</div>
+-->
+
+
+
+
+
+
+
+
+
+<!--드롭다운 메뉴 반응형 스크립트-->
+
+<script>
+
+function dropdownFunction() {
+
+var x = document.getElementById(&quot;myTopnav&quot;);
+
+if (x.className === &quot;topnav&quot;) {
+
+x.className += &quot; responsive&quot;;
+
+} else {
+
+x.className = &quot;topnav&quot;;
+
+}
+
+}
+
+</script>
+
+
+
+
+
+
+
+</body>
+
+
+
+
+</html>
